@@ -1,9 +1,9 @@
 import express from 'express';
 import cors from 'cors';
 import * as trpcExpress from '@trpc/server/adapters/express';
-import { localTRPCCompose } from './app/composition-root';
+import { localTRPCCompose } from '../../app/composition-root';
 
-// created for each request
+
 const createContext = () => ({});
 const app = express();
 

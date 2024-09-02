@@ -1,20 +1,22 @@
-import { Api } from "../../app/api";
+
 import { initTRPC } from "@trpc/server";
 import { AuthenticatedUserSchema, RegisterSchema } from "../../app/schemas";
+import { Login, Register } from "../../app/use-cases";
 
 export function authTRPCAdapter(
-  api: Api,
+  login: Login,
+  register: Register,
   t: ReturnType<typeof initTRPC.create>
 ) {
   return t.router({
     login: t.procedure
       .input(RegisterSchema.pick({ email: true, password: true }))
       .output(AuthenticatedUserSchema)
-      .mutation(({ input }) =>  api.login(input.email, input.password)),
+      .mutation(({ input }) =>  login.login(input.email, input.password)),
 
     register: t.procedure
       .input(RegisterSchema)
       .output(AuthenticatedUserSchema)
-      .mutation(({ input }) => api.register(input, input.password)),
+      .mutation(({ input }) => register.register(input, input.password)),
   });
 }
